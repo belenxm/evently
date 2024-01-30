@@ -2,9 +2,8 @@
 
 
 /* we created our first server action */
-
-import { revalidatePath } from 'next/cache' 
 import { connectToDatabase } from '../database'
+import { revalidatePath } from 'next/cache' 
 import { CreateUserParams, UpdateUserParams } from '@/types'
 import { handleError } from '../utils'
 

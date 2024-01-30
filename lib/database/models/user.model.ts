@@ -1,3 +1,4 @@
+
 import { Schema, model, models } from "mongoose";
 
 /* WE'RE GONNA TO PROVIDE AN ARRAY OF DIFFERENT PROPERTIES */
