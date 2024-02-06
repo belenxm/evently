@@ -1,18 +1,20 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
-/* import Collection from '@/components/shared/Collection'
-import { getAllEvents } from '@/lib/actions/event.actions' */
+import Collection from '@/components/shared/Collection'
+import { getAllEvents } from '@/lib/actions/event.actions' 
 
 
 
 export default async function Home() {
- /*  const events = await getAllEvents({
+//fetch those events right here
+
+ const events = await getAllEvents({
     query:'',
     category:'',
     page:1,
     limit:6
-  }); */
+  }); 
 
 
   
@@ -51,7 +53,7 @@ export default async function Home() {
      </div>
 
 {/* all this data has to properly be pased to the collection file, which it can be accepted through props */}
-    {/*  <Collection
+     <Collection
       data={events?.data}
       emptyTitle= 'No events Found'
       emptyStateSubtext='Come back later'
@@ -60,7 +62,7 @@ export default async function Home() {
       page={1}
       totalPages={2}
      
-     /> */}
+     /> 
      
     </section>
 
