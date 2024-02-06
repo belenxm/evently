@@ -1,49 +1,44 @@
 "use client"
 
-
-
-
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, /* FormDescription, */ FormField, FormItem, /* FormLabel, */ FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { eventFormSchema } from "@/lib/validator"
 import * as z from 'zod'
+import { eventDefaultValues } from "@/constans"
 import Dropdown from "./Dropdown"
 import { Textarea } from "@/components/ui/textarea"
-import { FileUploader } from "@/components/shared/FileUploader"
+import { FileUploader } from "./FileUploader"
 import { useState } from "react"
 import Image from "next/image"
-import { useUploadThing } from '@/lib/uploadthing'
-import { useRouter } from "next/navigation"
-import "react-datepicker/dist/react-datepicker.css";
-import { IEvent } from "@/lib/database/models/event.model"
-import { eventFormSchema } from "@/lib/validator" 
 import DatePicker from "react-datepicker";
+import { useUploadThing } from '@/lib/uploadthing'
+
+import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox"
+import { useRouter } from "next/navigation"
+import { createEvent, updateEvent } from "@/lib/actions/event.actions"
+import { IEvent } from "@/lib/database/models/event.model"
 
-import { eventDefaultValues } from "@/constans" 
-
-import { createEvent/* , updateEvent */ } from "@/lib/actions/event.actions"
 
 type EventFormProps = {
   userId: string
   type: "Create" | "Update"
- event?: IEvent, 
-  eventId?: string 
+  event?: IEvent,
+  eventId?: string
 }
 
-const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) => {
+const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([])
-  const initialValues = event && type === 'Update'
-  ? {...event, 
-    startDateTime: new Date(event.startDateTime),
-    endDateTime: new Date(event.endDateTime)
-  } 
-  : eventDefaultValues;
-
-
+  const initialValues = event && type === 'Update' 
+    ? { 
+      ...event, 
+      startDateTime: new Date(event.startDateTime), 
+      endDateTime: new Date(event.endDateTime) 
+    }
+    : eventDefaultValues;
   const router = useRouter();
 
   const { startUpload } = useUploadThing('imageUploader')
@@ -54,10 +49,7 @@ const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) =>
   })
  
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    /* const eventData = values; */
-    
     let uploadedImageUrl = values.imageUrl;
-
 
     if(files.length > 0) {
       const uploadedImages = await startUpload(files)
@@ -86,24 +78,18 @@ const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) =>
       }
     }
 
-// Check if the type is equal to update: we can do it, duplicating the create block code right below.
-
-
-     /* if(type === 'Update') {
+    if(type === 'Update') {
       if(!eventId) {
-        router.back()// to go the previus page.
-
+        router.back()
         return;
       }
 
       try {
         const updatedEvent = await updateEvent({
-          userId, //first parameter 
+          userId,
           event: { ...values, imageUrl: uploadedImageUrl, _id: eventId },
-          path: `/events/${eventId}` // Donde volvemos una vez que se crea el evento.
+          path: `/events/${eventId}`
         })
-
-        // Finalmente si tenemos un evento adaptado , queremos resetar el formulario y subir el evento adaptado.
 
         if(updatedEvent) {
           form.reset();
@@ -112,10 +98,9 @@ const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) =>
       } catch (error) {
         console.log(error);
       }
-    } */
-    
-  } 
- 
+    }
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -266,8 +251,6 @@ const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) =>
             />
         </div>
 
-      {/* PRICE */}
-
         <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
@@ -304,14 +287,12 @@ const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) =>
                         )}
                       />   
                     </div>
+
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />   
-
-            {/* URL */}
-            
            <FormField
               control={form.control}
               name="url"
@@ -349,8 +330,6 @@ const EventForm = ({ userId, type , event, /* eventId */   }: EventFormProps) =>
       </form>
     </Form>
   )
-
 }
 
 export default EventForm
-

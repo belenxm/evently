@@ -1,15 +1,15 @@
+ /* import CheckoutButton from "@/components/shared/CheckoutButton"; */
 import CheckoutButton from "@/components/shared/CheckoutButton";
 import Collection from "@/components/shared/Collection";
-import { getEventById, getRelatedEventsByCategory } from "@/lib/actions/event.actions";
+import { getEventById,  getRelatedEventsByCategory  } from "@/lib/actions/event.actions";
 import { formatDateTime } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import Image from "next/image";
-import React from "react";
+import React from "react"; 
 
-/* To get started we have to make an another call to event actions
- */
+/* To get started we have to make an another call to event actions*/
 
-const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
+  const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
   const event = await getEventById(id);
 
   const relatedEvents = await getRelatedEventsByCategory({
@@ -53,10 +53,11 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
                   </span>
                 </p>
               </div>
-            </div>
+            </div> 
 
              {/* here we're gonna pass the event that we're buying, and pass the event in the checkout button component. */}
-            <CheckoutButton event={event} />
+
+          <CheckoutButton event={event} /> 
 
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
@@ -98,11 +99,13 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
             </p>
           </div>
         </div>
-      </section>
+      </section> 
 
-      {/*VENTS WITH THE SAME CATEGORY */}
 
-      <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
+       
+      {/*EVENTS WITH THE SAME CATEGORY */}
+
+    <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
         <h2 className="h2-bold">Related Events</h2>
         <Collection
           data={relatedEvents?.data} // We have to pass related events, which we can fetch at the top.
@@ -113,9 +116,14 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
           page={1}
           totalPages={2}
         />
-      </section>
+    </section>
+
     </>
   );
 };
 
 export default EventDetails;
+
+
+
+
