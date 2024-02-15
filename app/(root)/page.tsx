@@ -3,17 +3,26 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Collection from '@/components/shared/Collection'
 import { getAllEvents } from '@/lib/actions/event.actions' 
+import Search from '@/components/shared/Search'
+import { SearchParamProps } from '@/types'
+import CategoryFilter from '@/components/shared/CategoryFilter'
 
 
 
-export default async function Home() {
+
+
+export default async function Home( { searchParams } : SearchParamProps ) {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || '';
+  const category = (searchParams?.category as string) || '';
 //fetch those events right here
 
  const events = await getAllEvents({
-    query:'',
-    category:'',
-    page:1,
-    limit:6
+    query:searchText,
+    category,
+    page,
+    limit:6,
+
   }); 
 
 
@@ -48,8 +57,8 @@ export default async function Home() {
 
     <h2 className='h2-bold'>Trust by <br /> Thousands of Events</h2>
      <div className='flex w-full flex-col gap-5 md:flex-row'>
-      Search
-      CategoryFilter
+      <Search />
+      <CategoryFilter/>
      </div>
 
 {/* all this data has to properly be pased to the collection file, which it can be accepted through props */}
@@ -59,9 +68,8 @@ export default async function Home() {
       emptyStateSubtext='Come back later'
       collectionType='All_Events'
       limit= {6}
-      page={1}
-      totalPages={2}
-     
+      page={page}
+      totalPages={events?.totalPages} 
      /> 
      
     </section>
